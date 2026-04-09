@@ -1,0 +1,344 @@
+
+<style>
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
+.stepper{display:flex;gap:0;margin-bottom:1.5rem;flex-wrap:wrap}
+.step-tab{padding:7px 14px;font-size:12px;cursor:pointer;border:0.5px solid var(--color-border-tertiary);background:var(--color-background-secondary);color:var(--color-text-secondary);transition:all .15s}
+.step-tab:first-child{border-radius:var(--border-radius-md) 0 0 var(--border-radius-md)}
+.step-tab:last-child{border-radius:0 var(--border-radius-md) var(--border-radius-md) 0}
+.step-tab.active{background:var(--color-background-primary);color:var(--color-text-primary);font-weight:500;border-color:var(--color-border-primary)}
+.panel{display:none}
+.panel.active{display:block}
+.phase-label{font-size:11px;font-weight:500;padding:2px 10px;border-radius:20px;display:inline-block;margin-bottom:10px}
+.lbl-purple{background:#EEEDFE;color:#3C3489}
+.lbl-blue{background:#E6F1FB;color:#0C447C}
+.lbl-teal{background:#E1F5EE;color:#085041}
+.lbl-amber{background:#FAEEDA;color:#633806}
+.lbl-green{background:#EAF3DE;color:#27500A}
+.ph{font-size:16px;font-weight:500;color:var(--color-text-primary);margin:0 0 4px}
+.sub{font-size:13px;color:var(--color-text-secondary);margin:0 0 14px;line-height:1.6}
+.step-block{border-left:2px solid var(--color-border-tertiary);padding:0 0 16px 16px;margin-left:6px;position:relative}
+.step-block:last-of-type{padding-bottom:0}
+.step-num{position:absolute;left:-9px;top:0;width:16px;height:16px;border-radius:50%;background:var(--color-background-primary);border:1.5px solid var(--color-border-secondary);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:500;color:var(--color-text-secondary)}
+.step-title{font-size:14px;font-weight:500;color:var(--color-text-primary);margin:0 0 4px}
+.step-desc{font-size:13px;color:var(--color-text-secondary);margin:0 0 8px;line-height:1.6}
+.code{font-family:var(--font-mono);font-size:12px;background:var(--color-background-tertiary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:10px 14px;margin:6px 0;white-space:pre;overflow-x:auto;color:var(--color-text-primary)}
+.img-mock{background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:14px 16px;margin:8px 0;font-size:12px;color:var(--color-text-secondary)}
+.img-mock strong{font-weight:500;color:var(--color-text-primary);display:block;margin-bottom:4px}
+.row{display:flex;align-items:center;gap:8px;margin:4px 0}
+.dot-ok{width:8px;height:8px;border-radius:50%;background:#639922;flex-shrink:0}
+.dot-arrow{font-size:12px;color:var(--color-text-tertiary)}
+.tip{background:var(--color-background-info);border:0.5px solid var(--color-border-info);border-radius:var(--border-radius-md);padding:8px 12px;font-size:12px;color:var(--color-text-info);margin:10px 0}
+.warn{background:var(--color-background-warning);border:0.5px solid var(--color-border-warning);border-radius:var(--border-radius-md);padding:8px 12px;font-size:12px;color:var(--color-text-warning);margin:10px 0}
+.success{background:var(--color-background-success);border:0.5px solid var(--color-border-success);border-radius:var(--border-radius-md);padding:8px 12px;font-size:12px;color:var(--color-text-success);margin:10px 0}
+.url-bar{font-family:var(--font-mono);font-size:12px;background:var(--color-background-tertiary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:8px 14px;color:var(--color-text-info);margin:6px 0}
+.nav-row{display:flex;gap:8px;margin-top:1rem}
+.ask-btn{font-size:12px;padding:5px 12px;cursor:pointer;border-radius:var(--border-radius-md)}
+.file-tree{font-family:var(--font-mono);font-size:12px;background:var(--color-background-tertiary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:10px 14px;margin:6px 0;line-height:1.8;color:var(--color-text-primary)}
+.f-dir{color:#0C447C}
+.f-file{color:var(--color-text-secondary)}
+.progress-bar{height:4px;background:var(--color-background-tertiary);border-radius:2px;margin:8px 0;overflow:hidden}
+.progress-fill{height:100%;border-radius:2px;background:#1D9E75;transition:width .3s}
+</style>
+
+<h2 class="sr-only">Complete step-by-step guide to designing and deploying a web app on Vercel</h2>
+
+<div class="progress-bar"><div class="progress-fill" id="prog" style="width:20%"></div></div>
+
+<div class="stepper" id="stepper">
+  <div class="step-tab active" onclick="go(0)">1. Setup</div>
+  <div class="step-tab" onclick="go(1)">2. Build app</div>
+  <div class="step-tab" onclick="go(2)">3. GitHub</div>
+  <div class="step-tab" onclick="go(3)">4. Vercel</div>
+  <div class="step-tab" onclick="go(4)">5. Live!</div>
+</div>
+
+<div class="panel active" id="p0">
+  <span class="phase-label lbl-purple">Phase 1 — Setup tools</span>
+  <p class="ph">Install the tools you need</p>
+  <p class="sub">You need Node.js, VS Code, and a GitHub account. All free, no card required.</p>
+
+  <div class="step-block">
+    <div class="step-num">1</div>
+    <div class="step-title">Install Node.js</div>
+    <div class="step-desc">Go to <strong style="font-weight:500;color:var(--color-text-info)">nodejs.org</strong> → download the LTS version → install it. This gives you <code style="font-family:var(--font-mono);font-size:11px">npm</code> (package manager).</div>
+    <div class="img-mock"><strong>Verify installation — open your terminal and run:</strong>node --version
+npm --version</div>
+    <div class="tip">You should see version numbers like v20.x.x — that means Node is installed correctly.</div>
+  </div>
+
+  <div class="step-block">
+    <div class="step-num">2</div>
+    <div class="step-title">Install VS Code</div>
+    <div class="step-desc">Go to <strong style="font-weight:500;color:var(--color-text-info)">code.visualstudio.com</strong> → download → install. This is your code editor.</div>
+  </div>
+
+  <div class="step-block">
+    <div class="step-num">3</div>
+    <div class="step-title">Create a GitHub account</div>
+    <div class="step-desc">Go to <strong style="font-weight:500;color:var(--color-text-info)">github.com</strong> → Sign up → choose a username and password. No card needed.</div>
+    <div class="tip">Remember your GitHub username — you'll need it in Step 3.</div>
+  </div>
+
+  <div class="step-block">
+    <div class="step-num">4</div>
+    <div class="step-title">Install Git</div>
+    <div class="step-desc">Go to <strong style="font-weight:500;color:var(--color-text-info)">git-scm.com</strong> → download → install. Then set your identity in the terminal:</div>
+    <div class="code">git config --global user.name "Your Name"
+git config --global user.email "your@email.com"</div>
+  </div>
+
+  <div class="nav-row">
+    <button class="ask-btn" onclick="go(1)">Next: Build your app →</button>
+    <button class="ask-btn" onclick="sendPrompt('I am having trouble installing Node.js, can you help? ↗')">Help with install ↗</button>
+  </div>
+</div>
+
+<div class="panel" id="p1">
+  <span class="phase-label lbl-blue">Phase 2 — Design your web app</span>
+  <p class="ph">Create a React app using Vite</p>
+  <p class="sub">We'll scaffold a real project in under 2 minutes using the terminal.</p>
+
+  <div class="step-block">
+    <div class="step-num">1</div>
+    <div class="step-title">Open your terminal</div>
+    <div class="step-desc">On Windows: press <code style="font-family:var(--font-mono);font-size:11px">Win + R</code> → type <code style="font-family:var(--font-mono);font-size:11px">cmd</code> → Enter. On Mac: <code style="font-family:var(--font-mono);font-size:11px">Cmd + Space</code> → type <code style="font-family:var(--font-mono);font-size:11px">Terminal</code>.</div>
+  </div>
+
+  <div class="step-block">
+    <div class="step-num">2</div>
+    <div class="step-title">Scaffold the project</div>
+    <div class="step-desc">Run these commands one by one:</div>
+    <div class="code">npm create vite@latest my-portfolio -- --template react
+cd my-portfolio
+npm install</div>
+    <div class="tip">Vite is a fast build tool. It creates a ready-to-go React project structure for you automatically.</div>
+  </div>
+
+  <div class="step-block">
+    <div class="step-num">3</div>
+    <div class="step-title">Open in VS Code</div>
+    <div class="code">code .</div>
+    <div class="step-desc">This opens the entire project folder in VS Code. You'll see this file structure:</div>
+    <div class="file-tree"><span class="f-dir">my-portfolio/</span>
+├── <span class="f-dir">src/</span>
+│   ├── <span class="f-file">App.jsx</span>       ← your main page
+│   ├── <span class="f-file">App.css</span>       ← your styles
+│   └── <span class="f-file">main.jsx</span>
+├── <span class="f-file">index.html</span>
+└── <span class="f-file">package.json</span></div>
+  </div>
+
+  <div class="step-block">
+    <div class="step-num">4</div>
+    <div class="step-title">Edit App.jsx — customise your app</div>
+    <div class="step-desc">Open <code style="font-family:var(--font-mono);font-size:11px">src/App.jsx</code> and replace its contents with this simple portfolio page:</div>
+    <div class="code">function App() {
+  return (
+    &lt;div style={{textAlign:'center', padding:'50px', fontFamily:'sans-serif'}}&gt;
+      &lt;h1&gt;My Web App&lt;/h1&gt;
+      &lt;p&gt;Deployed on Vercel using PaaS!&lt;/p&gt;
+      &lt;p style={{color:'#888'}}&gt;Built with React + Vite&lt;/p&gt;
+    &lt;/div&gt;
+  )
+}
+export default App</div>
+  </div>
+
+  <div class="step-block">
+    <div class="step-num">5</div>
+    <div class="step-title">Run locally to test</div>
+    <div class="code">npm run dev</div>
+    <div class="step-desc">Open <span style="color:var(--color-text-info);font-weight:500">http://localhost:5173</span> in your browser. You should see your app running!</div>
+    <div class="success">App works locally — ready to deploy!</div>
+  </div>
+
+  <div class="step-block">
+    <div class="step-num">6</div>
+    <div class="step-title">Create the production build</div>
+    <div class="code">npm run build</div>
+    <div class="step-desc">This creates a <code style="font-family:var(--font-mono);font-size:11px">dist/</code> folder with your optimised app ready for deployment.</div>
+  </div>
+
+  <div class="nav-row">
+    <button class="ask-btn" onclick="go(0)">← Back</button>
+    <button class="ask-btn" onclick="go(2)">Next: Push to GitHub →</button>
+    <button class="ask-btn" onclick="sendPrompt('Give me a better looking React app I can use for my Vercel deployment practical ↗')">Get a better app ↗</button>
+  </div>
+</div>
+
+<div class="panel" id="p2">
+  <span class="phase-label lbl-teal">Phase 3 — Push to GitHub</span>
+  <p class="ph">Upload your code to GitHub</p>
+  <p class="sub">Vercel connects directly to GitHub. First get your code on GitHub, then Vercel can pull it.</p>
+
+  <div class="step-block">
+    <div class="step-num">1</div>
+    <div class="step-title">Create a new repository on GitHub</div>
+    <div class="step-desc">Go to <strong style="font-weight:500;color:var(--color-text-info)">github.com</strong> → click the <strong style="font-weight:500">+</strong> icon (top right) → New repository.</div>
+    <div class="img-mock">
+      <strong>Fill in the form:</strong>
+      <div class="row"><span class="dot-arrow">›</span><span style="font-size:12px">Repository name: <code style="font-family:var(--font-mono);font-size:11px">my-portfolio</code></span></div>
+      <div class="row"><span class="dot-arrow">›</span><span style="font-size:12px">Visibility: Public</span></div>
+      <div class="row"><span class="dot-arrow">›</span><span style="font-size:12px">Do NOT tick "Add README" (keep it empty)</span></div>
+      <div class="row"><span class="dot-arrow">›</span><span style="font-size:12px">Click <strong style="font-weight:500">Create repository</strong></span></div>
+    </div>
+  </div>
+
+  <div class="step-block">
+    <div class="step-num">2</div>
+    <div class="step-title">Initialise Git in your project</div>
+    <div class="step-desc">In your terminal (inside the my-portfolio folder):</div>
+    <div class="code">git init
+git add .
+git commit -m "first commit"</div>
+  </div>
+
+  <div class="step-block">
+    <div class="step-num">3</div>
+    <div class="step-title">Connect and push to GitHub</div>
+    <div class="step-desc">Copy your repo URL from GitHub (looks like the one below) and run:</div>
+    <div class="code">git branch -M main
+git remote add origin https://github.com/YOUR_USERNAME/my-portfolio.git
+git push -u origin main</div>
+    <div class="warn">Replace YOUR_USERNAME with your actual GitHub username!</div>
+  </div>
+
+  <div class="step-block">
+    <div class="step-num">4</div>
+    <div class="step-title">Verify on GitHub</div>
+    <div class="step-desc">Go to your GitHub profile → click your repository. You should see all your project files listed there.</div>
+    <div class="success">Code is on GitHub — ready to connect Vercel!</div>
+  </div>
+
+  <div class="nav-row">
+    <button class="ask-btn" onclick="go(1)">← Back</button>
+    <button class="ask-btn" onclick="go(3)">Next: Deploy on Vercel →</button>
+    <button class="ask-btn" onclick="sendPrompt('I am getting a git push error, how do I fix it? ↗')">Fix git errors ↗</button>
+  </div>
+</div>
+
+<div class="panel" id="p3">
+  <span class="phase-label lbl-amber">Phase 4 — Deploy on Vercel</span>
+  <p class="ph">Connect GitHub to Vercel and deploy</p>
+  <p class="sub">No card needed. Just your GitHub account. The whole thing takes about 2 minutes.</p>
+
+  <div class="step-block">
+    <div class="step-num">1</div>
+    <div class="step-title">Sign up on Vercel</div>
+    <div class="step-desc">Go to <strong style="font-weight:500;color:var(--color-text-info)">vercel.com</strong> → click <strong style="font-weight:500">Sign Up</strong> → choose <strong style="font-weight:500">Continue with GitHub</strong> → authorise Vercel.</div>
+    <div class="tip">No credit card is asked — Vercel only needs your GitHub login.</div>
+  </div>
+
+  <div class="step-block">
+    <div class="step-num">2</div>
+    <div class="step-title">Import your project</div>
+    <div class="step-desc">After login you land on the dashboard. Click <strong style="font-weight:500">Add New Project</strong>.</div>
+    <div class="img-mock">
+      <strong>On the "Import Git Repository" screen:</strong>
+      <div class="row"><span class="dot-arrow">›</span><span style="font-size:12px">You'll see your GitHub repos listed</span></div>
+      <div class="row"><span class="dot-arrow">›</span><span style="font-size:12px">Find <code style="font-family:var(--font-mono);font-size:11px">my-portfolio</code> → click <strong style="font-weight:500">Import</strong></span></div>
+    </div>
+  </div>
+
+  <div class="step-block">
+    <div class="step-num">3</div>
+    <div class="step-title">Configure build settings</div>
+    <div class="step-desc">Vercel auto-detects Vite + React. Confirm these settings (they should already be filled):</div>
+    <div class="img-mock">
+      <strong>Build settings (auto-detected):</strong>
+      <div class="row"><span class="dot-ok"></span><span style="font-size:12px">Framework Preset: <strong style="font-weight:500">Vite</strong></span></div>
+      <div class="row"><span class="dot-ok"></span><span style="font-size:12px">Build Command: <code style="font-family:var(--font-mono);font-size:11px">npm run build</code></span></div>
+      <div class="row"><span class="dot-ok"></span><span style="font-size:12px">Output Directory: <code style="font-family:var(--font-mono);font-size:11px">dist</code></span></div>
+      <div class="row"><span class="dot-ok"></span><span style="font-size:12px">Install Command: <code style="font-family:var(--font-mono);font-size:11px">npm install</code></span></div>
+    </div>
+  </div>
+
+  <div class="step-block">
+    <div class="step-num">4</div>
+    <div class="step-title">Click Deploy!</div>
+    <div class="step-desc">Click the big <strong style="font-weight:500">Deploy</strong> button. Vercel will run your build and deploy it to their global CDN.</div>
+    <div class="img-mock">
+      <strong>You'll see the build log in real time:</strong>
+      <div style="font-family:var(--font-mono);font-size:11px;line-height:1.8;color:var(--color-text-secondary)">
+        Cloning repository...<br>
+        Installing dependencies...<br>
+        Running build command: npm run build<br>
+        Build completed in 12s<br>
+        Deploying to production...
+      </div>
+    </div>
+    <div class="tip">Build usually completes in 30–90 seconds.</div>
+  </div>
+
+  <div class="nav-row">
+    <button class="ask-btn" onclick="go(2)">← Back</button>
+    <button class="ask-btn" onclick="go(4)">Next: See your live app →</button>
+    <button class="ask-btn" onclick="sendPrompt('My Vercel build failed, how do I fix it? ↗')">Fix build error ↗</button>
+  </div>
+</div>
+
+<div class="panel" id="p4">
+  <span class="phase-label lbl-green">Phase 5 — Your app is live!</span>
+  <p class="ph">Your web app is deployed on the internet</p>
+  <p class="sub">Vercel gives you a live URL instantly. Share it with anyone.</p>
+
+  <div class="step-block">
+    <div class="step-num">1</div>
+    <div class="step-title">Get your live URL</div>
+    <div class="step-desc">After deploy, Vercel shows a success screen with your public URL:</div>
+    <div class="url-bar">https://my-portfolio-abc123.vercel.app</div>
+    <div class="success">Your web app is live and accessible to anyone in the world!</div>
+  </div>
+
+  <div class="step-block">
+    <div class="step-num">2</div>
+    <div class="step-title">Test CI/CD — automatic redeployment</div>
+    <div class="step-desc">Edit something in <code style="font-family:var(--font-mono);font-size:11px">App.jsx</code> (change the heading), save, then push:</div>
+    <div class="code">git add .
+git commit -m "updated heading"
+git push</div>
+    <div class="step-desc">Watch your Vercel dashboard — it automatically starts a new build! This is the power of PaaS CI/CD.</div>
+  </div>
+
+  <div class="step-block">
+    <div class="step-num">3</div>
+    <div class="step-title">View deployments dashboard</div>
+    <div class="step-desc">In Vercel dashboard → click your project → <strong style="font-weight:500">Deployments</strong> tab. You'll see every deployment with its status, time, and build logs.</div>
+    <div class="img-mock">
+      <strong>Deployments list:</strong>
+      <div class="row"><span class="dot-ok"></span><span style="font-size:12px">Production — updated heading — 2 min ago</span></div>
+      <div class="row"><span class="dot-ok"></span><span style="font-size:12px">Production — first commit — 15 min ago</span></div>
+    </div>
+  </div>
+
+  <div class="step-block">
+    <div class="step-num">4</div>
+    <div class="step-title">What you've accomplished</div>
+    <div class="img-mock">
+      <strong>PaaS concepts demonstrated:</strong>
+      <div class="row"><span class="dot-ok"></span><span style="font-size:12px">Designed a web app locally</span></div>
+      <div class="row"><span class="dot-ok"></span><span style="font-size:12px">Used version control (Git + GitHub)</span></div>
+      <div class="row"><span class="dot-ok"></span><span style="font-size:12px">Deployed to a PaaS platform (Vercel)</span></div>
+      <div class="row"><span class="dot-ok"></span><span style="font-size:12px">Used CI/CD — auto rebuild on push</span></div>
+      <div class="row"><span class="dot-ok"></span><span style="font-size:12px">App hosted on a global CDN</span></div>
+      <div class="row"><span class="dot-ok"></span><span style="font-size:12px">Zero cost, zero card required</span></div>
+    </div>
+  </div>
+
+  <div class="nav-row">
+    <button class="ask-btn" onclick="go(3)">← Back</button>
+    <button class="ask-btn" onclick="sendPrompt('How do I add a custom domain to my Vercel app? ↗')">Add custom domain ↗</button>
+    <button class="ask-btn" onclick="sendPrompt('How do I make my Vercel app look more professional? ↗')">Improve my app ↗</button>
+  </div>
+</div>
+
+<script>
+const panels=document.querySelectorAll('.panel');
+const tabs=document.querySelectorAll('.step-tab');
+const prog=document.getElementById('prog');
+function go(i){
+  panels.forEach((p,j)=>{p.classList.toggle('active',j===i)});
+  tabs.forEach((t,j)=>{t.classList.toggle('active',j===i)});
+  prog.style.width=Math.round((i+1)/5*100)+'%';
+}
+</script>
