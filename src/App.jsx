@@ -8,7 +8,7 @@ import './App.css'
 function App() {
   return (
     <div style={{textAlign:'center', padding:'50px', fontFamily:'sans-serif'}}>
-      <h1>My Web App</h1>
+      <h1>My Web App on Vercel</h1>
       <p>Deployed on Vercel using PaaS!</p>
       <p style={{color:'#888'}}>Built with React + Vite</p>
     </div>
